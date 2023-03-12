@@ -1,5 +1,26 @@
-package info.kgeorgiy.ja.vasilenko.implementor;/**
- * @author VMihail (vmihail399@gmail.com)
- * created: 12.03.2023 18:55       
- */public interface Impler {
+package info.kgeorgiy.ja.vasilenko.implementor;
+
+import info.kgeorgiy.ja.vasilenko.implementor.tools.ImplerException;
+
+import java.nio.file.Path;
+
+/**
+ * @author Georgiy Korneev (kgeorgiy@kgeorgiy.info)
+ */
+public interface Impler {
+  /**
+   * Produces code implementing class or interface specified by provided {@code token}.
+   * <p>
+   * Generated class' name should be the same as the class name of the type token with {@code Impl} suffix
+   * added. Generated source code should be placed in the correct subdirectory of the specified
+   * {@code root} directory and have correct file name. For example, the implementation of the
+   * interface {@link java.util.List} should go to {@code $root/java/util/ListImpl.java}
+   *
+   *
+   * @param token type token to create implementation for.
+   * @param root root directory.
+   * @throws ImplerException when implementation cannot be
+   * generated.
+   */
+  void implement(Class<?> token, Path root) throws ImplerException;
 }
