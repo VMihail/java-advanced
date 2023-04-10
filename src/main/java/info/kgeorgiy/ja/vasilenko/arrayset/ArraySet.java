@@ -2,21 +2,41 @@ package info.kgeorgiy.ja.vasilenko.arrayset;
 
 import java.util.*;
 
+/**
+ * Реализация {@link SortedSet} на списке.
+ * @param <T> тип хранимых объектов
+ */
 public class ArraySet<T> extends AbstractSet<T> implements SortedSet<T> {
+  /** Список хранимых объектов*/
   private final List<T> list;
+  /** Компаратор для сравнения хранимых объектов */
   private final Comparator<T> comparator;
 
+  /**
+   * Создает множество с пустым списком и заданным компаратором
+   * @param comparator {@link #comparator}
+   */
   public ArraySet(final Comparator<T> comparator) {
     this.comparator = Objects.requireNonNull(comparator);
     this.list = new ArrayList<>();
   }
 
+  /**
+   * Создает множество по заданной коллекции и заданным компаратором
+   * @param collection коллекция объектов, на которой будет построено множество
+   * @param comparator {@link #comparator}
+   */
   public ArraySet(final Collection<T> collection, final Comparator<T> comparator) {
     this(comparator);
     list.addAll(collection);
     list.sort(comparator);
   }
 
+  /**
+   * Конструктор для копирования
+   * @param list список, на котором реализованно множествео
+   * @param comparator {@link #comparator}
+   */
   private ArraySet(final List<T> list, final Comparator<T> comparator) {
     this.comparator = Objects.requireNonNull(comparator);
     this.list = Objects.requireNonNull(list);
@@ -191,6 +211,11 @@ public class ArraySet<T> extends AbstractSet<T> implements SortedSet<T> {
     return list.get(list.size() - 1);
   }
 
+  /**
+   * Проверяет наличие элемента в множестве
+   * @param element element whose presence in this set is to be tested
+   * @return {@code} true если элемент принадлежит множеству, иначе {@code false}
+   */
   @Override
   public boolean contains(Object element) {
     Objects.requireNonNull(element);
