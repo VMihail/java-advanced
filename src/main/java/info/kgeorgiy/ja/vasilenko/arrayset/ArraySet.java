@@ -28,7 +28,7 @@ public class ArraySet<T> extends AbstractSet<T> implements SortedSet<T> {
    */
   public ArraySet(final Collection<T> collection, final Comparator<T> comparator) {
     this(comparator);
-    list.addAll(collection);
+    list.addAll(Objects.requireNonNull(collection));
     list.sort(comparator);
   }
 
