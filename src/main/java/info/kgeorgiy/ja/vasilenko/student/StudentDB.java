@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
@@ -153,6 +154,11 @@ public class StudentDB implements StudentQuery {
    */
   @Override
   public Map<String, String> findStudentNamesByGroup(Collection<Student> students, GroupName group) {
-    return null;
+    return students.stream().filter(student -> student.getGroup().equals(group)).
+            collect(Collectors.toMap(
+             Student::getFirstName,
+             Student::getLastName,
+             BinaryOperator.minBy(String::compareTo)
+            ));
   }
 }
