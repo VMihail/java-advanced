@@ -12,10 +12,23 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 public class IterativeParallelism implements ScalarIP {
+  /**
+   * Нормализует количетво потоков
+   * @param threadsCount исходное количество потоков
+   * @param collectionLen длинна коллекции
+   * @return {@code Math.min} от обоих аргументов
+   */
   private int threadCountNormalization(final int threadsCount, final int collectionLen) {
     return Math.min(threadsCount, collectionLen);
   }
 
+  /**
+   * Разделяет список на заданное количество частей
+   * @param values разделяемый список
+   * @param numberOfParts количество частей, на которое мы его делим
+   * @return Список из частей искомого списка
+   * @param <T> тип содержимого списка
+   */
   private <T> List<List<? extends T>> divide(final List<? extends T> values, int numberOfParts) {
     numberOfParts = threadCountNormalization(numberOfParts, values.size());
     final List<List<? extends T>> result = new ArrayList<>(numberOfParts);
@@ -31,6 +44,17 @@ public class IterativeParallelism implements ScalarIP {
     return result;
   }
 
+  /**
+   * Выполняет параллельно запрос для списка
+   * @param threads количество потоков
+   * @param values искомый список
+   * @param function функция, которую мы вычисляем для списка
+   * @param functionResult функция, которую мы вычисляет с результатами всех потоков
+   * @return результат запроса
+   * @param <T> тип объектов в списке
+   * @param <R> тип результата запроса
+   * @throws InterruptedException если произошла ошибка с потоками
+   */
   private <T, R> R doParallel(int threads, final List<? extends T> values,
                            final Function<Stream<? extends T>, R> function,
                            final Function<List<R>, R> functionResult) throws InterruptedException {
@@ -131,22 +155,5 @@ public class IterativeParallelism implements ScalarIP {
     return doParallel(threads, values,
      (stream -> (int) stream.filter(predicate).count()),
      (resultList -> resultList.stream().reduce(Integer::sum).orElse(0)));
-  }
-
-  public static void main(String[] args) throws InterruptedException {
-    List<Integer> a = List.of(1, 20, 3, 4, 5, 6, -7, 8);
-    IterativeParallelism iterativeParallelism = new IterativeParallelism();
-    System.out.println(
-     iterativeParallelism.maximum(2, a, Integer::compareTo) + " " +
-      iterativeParallelism.minimum(2, a, Integer::compareTo)
-    );
-
-    System.out.println(
-     iterativeParallelism.all(2, a, n -> n > -10)
-    );
-
-    System.out.println(
-     iterativeParallelism.count(2, a, n -> n % 2 == 0)
-    );
   }
 }
