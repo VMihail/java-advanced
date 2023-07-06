@@ -1,4 +1,4 @@
-package advanced.concurrent;
+package info.kgeorgiy.ja.vasilenko.concurrent;
 
 import java.util.Comparator;
 import java.util.List;

@@ -1,7 +1,5 @@
 package info.kgeorgiy.ja.vasilenko.concurrent;
 
-import advanced.concurrent.ScalarIP;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
